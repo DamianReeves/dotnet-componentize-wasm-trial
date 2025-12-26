@@ -15,8 +15,13 @@
 
   <ItemGroup>
     <PackageReference Include="BytecodeAlliance.Componentize.DotNet.Wasm.SDK" Version="0.7.0-preview*" />
-    <PackageReference Include="runtime.linux-arm64.Microsoft.DotNet.ILCompiler" Version="10.0.1" />
+    <PackageReference Include="runtime.win-x64.Microsoft.DotNet.ILCompiler.LLVM" Version="10.0.0-alpha.1.25162.1" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Use x64 ILCompiler on Windows ARM64 via emulation -->
+    <IlcHostPackagePath Condition="'$(RuntimeIdentifier)' == 'wasi-wasm' and '$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture)' == 'Arm64'">$(NuGetPackageRoot)runtime.win-x64.microsoft.dotnet.ilcompiler.llvm\10.0.0-alpha.1.25162.1</IlcHostPackagePath>
+  </PropertyGroup>
 
   <ItemGroup>
     <Wit Include="wit/component.wit" />
